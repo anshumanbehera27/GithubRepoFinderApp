@@ -162,18 +162,37 @@ fun GitHubRepoList(repos: List<GitHubRepo>) {
     }
 }
 
-@Preview(showBackground = true)
+
+
 @Composable
 fun PreviewGitHubRepoListItem() {
-    Column(Modifier.fillMaxSize()) {
-        GitHubRepoListItem(
-            repoName = "Sample Repository",
-            repoDescription = "This is a sample repository description.",
-            lastUpdated = "2024-10-16",
-            starCount = 100,
-            icon = painterResource(id = R.drawable.github),
+    val sampleRepos = listOf(
+        GitHubRepo(
+            name = "Sample Repository 1",
+            description = "This is a sample repository description 1.",
+            updatedAt = "2024-10-16",
+            stars = 100,
             language = "Kotlin",
-            onRepoClicked = {}
+            icon = R.drawable.github // Use the actual drawable resource ID
+        ),
+        GitHubRepo(
+            name = "Sample Repository 2",
+            description = "This is a sample repository description 2.",
+            updatedAt = "2024-10-16",
+            stars = 150,
+            language = "Java",
+            icon = R.drawable.github // Use the actual drawable resource ID
+        ),
+        GitHubRepo(
+            name = "Sample Repository 3",
+            description = "This is a sample repository description 3.",
+            updatedAt = "2024-10-16",
+            stars = 200,
+            language = "Python",
+            icon = R.drawable.github // Use the actual drawable resource ID
         )
-    }
+    )
+    GitHubRepoList(repos = sampleRepos)
+
+
 }

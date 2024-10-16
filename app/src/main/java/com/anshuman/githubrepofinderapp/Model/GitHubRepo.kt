@@ -7,5 +7,8 @@ data class GitHubRepo(
     val updatedAt: String,
     val stars: Int,
     val icon: Int,
-    val language: String?
+    val language: String?,
+
+
 )
+
