@@ -45,14 +45,7 @@ fun Navigation() {
                 .fillMaxSize()
                 .background(Color.White)) {
 
-                 LoginScreen()
-//                Text(
-//                    text = "Welcome to splash screen",
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 20.sp,
-//                    color = Color.Black,
-//                    modifier = Modifier.align(Alignment.Center)
-//                )
+                LoginPageNavigation()
             }
         }
     }

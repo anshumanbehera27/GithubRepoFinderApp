@@ -20,9 +20,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GithubRepoFinderAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Navigation()
-                }
+                Navigation()
+
             }
         }
     }
