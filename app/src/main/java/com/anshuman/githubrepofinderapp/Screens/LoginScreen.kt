@@ -1,6 +1,8 @@
 package com.anshuman.githubrepofinderapp.Screens
 
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +42,7 @@ fun LoginPageNavigation(){
         composable("home"){ HomeScreen(navController)}
 
 
+
     }
 }
 
@@ -46,6 +50,7 @@ fun LoginPageNavigation(){
 fun LoginScreen(navController: NavController) {
     var userName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -85,7 +90,8 @@ fun LoginScreen(navController: NavController) {
             value = userName,
             onValueChange = { userName = it },
             label = { Text(text = "Enter Username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -124,13 +130,15 @@ fun LoginScreen(navController: NavController) {
             label = { Text(text = "Enter Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.bodyLarge
+
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         // Login Button
-        ElevatedButton(
+        Button(
             onClick = {
                 // Handle login logic here
                 if (userName.isNotEmpty() && password.isNotEmpty()) {
@@ -142,13 +150,14 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFF43AF47)), // Light green background
+            colors = ButtonDefaults.buttonColors(Color(0xFF43AF47)),
             enabled = userName.isNotEmpty() && password.isNotEmpty()
         ) {
             Text(
                 text = "Login",
                 color = Color.White, // White text
                 fontWeight = FontWeight.Bold
+
             )
         }
 
@@ -175,7 +184,8 @@ fun LoginScreen(navController: NavController) {
             Text(text = "New to GitHub?", modifier = Modifier.padding(end = 4.dp))
             ClickableText(
                 text = androidx.compose.ui.text.AnnotatedString("Create an account."),
-                onClick = { /* Handle create account click */ },
+                onClick = {   val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/signup?source=login"))
+                    context.startActivity(intent) },
                 style = TextStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)
             )
         }
