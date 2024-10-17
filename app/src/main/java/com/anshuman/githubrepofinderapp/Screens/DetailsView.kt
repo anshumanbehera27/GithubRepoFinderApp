@@ -32,84 +32,7 @@ import com.anshuman.githubrepofinderapp.Model.Contributor
 import com.anshuman.githubrepofinderapp.viewmodel.MainViewModel
 import com.anshuman.githubrepofinderapp.viewmodel.MainViewModelFactory
 
-//@Composable
-//fun RepoDetailScreen(owner: String, repo: String) {
-//    // Create an instance of ApiClient, which implements ApiInterface
-//
-//    // Initialize the API client and ViewModel
-//
-//
-//    // Observe repository details and contributors
-//    val repositoryDetail by viewModel.repositoryDetail.observeAsState()
-//    val contributors by viewModel.contributors.observeAsState(emptyList())
-//    val context = LocalContext.current
-//
-//    // Fetch repository details when the screen is opened
-//    LaunchedEffect(Unit) {
-//        viewModel.fetchRepositoryDetails(owner, repo)
-//    }
-//
-//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-//        // Display repository details
-//        if (repositoryDetail != null) {
-//            val repoDetail = repositoryDetail!!
-//
-//            // Repository Image (Owner Avatar)
-//            Image(
-//                painter = rememberImagePainter(repoDetail.owner.avatar_url),
-//                contentDescription = "Owner Avatar",
-//                modifier = Modifier
-//                    .size(64.dp)
-//                    .clip(CircleShape)
-//                    .border(1.dp, Color.Gray, CircleShape)
-//            )
-//
-//            // Repository Name
-//            Text(
-//                text = repoDetail.name,
-//                style = MaterialTheme.typography.bodyLarge,
-//                modifier = Modifier.padding(vertical = 8.dp)
-//            )
-//
-//            // Repository Description
-//            Text(
-//                text = repoDetail.description ?: "No description available.",
-//                style = MaterialTheme.typography.bodyMedium
-//            )
-//
-//            // Project Link
-//            Text(
-//                text = "Project Link: ",
-//                style = MaterialTheme.typography.bodyLarge,
-//                modifier = Modifier.padding(top = 8.dp)
-//            )
-//            Text(
-//                text = repoDetail.html_url,
-//                color = Color.Blue,
-//                style = MaterialTheme.typography.bodyLarge,
-//                modifier = Modifier.clickable {
-//                    // Open the project link in a browser
-//                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repoDetail.html_url))
-//                    context.startActivity(intent)
-//                }
-//            )
-//
-//            // Contributors Section
-//            Spacer(modifier = Modifier.height(16.dp))
-//            Text(text = "Contributors:", style = MaterialTheme.typography.bodyLarge)
-////            LazyColumn {
-////                items(contributors) { contributor ->
-////                    ContributorItem(contributor) // Pass a single Contributor object
-////                }
-////            }
-////        } else {
-////            // Show loading or error state
-////            Text(text = "Loading...", style = MaterialTheme.typography.bodyLarge)
-////        }
-//        }
-//    }
-
-    @Composable
+@Composable
     fun ContributorItem(contributor: Contributor) { // Take a single Contributor
         Row(
             modifier = Modifier
@@ -135,7 +58,7 @@ import com.anshuman.githubrepofinderapp.viewmodel.MainViewModelFactory
                 Text(
                     text = "${contributor.contributions} contributions",
                     style = MaterialTheme.typography.bodySmall
-                ) // Correct usage
+                )
             }
         }
     }

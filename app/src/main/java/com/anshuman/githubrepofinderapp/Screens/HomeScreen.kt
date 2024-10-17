@@ -150,11 +150,6 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
     )
 }
 
-
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar() {

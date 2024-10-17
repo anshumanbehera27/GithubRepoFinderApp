@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.anshuman.githubrepofinderapp.AppNavGraph
 import com.anshuman.githubrepofinderapp.HomeScreen
 import com.anshuman.githubrepofinderapp.R
 
@@ -40,7 +41,7 @@ fun LoginPageNavigation(){
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login"){ LoginScreen(navController)}
-        composable("home"){ HomeScreen(navController)}
+        composable("home"){ HomeScreen(navController) }
 
 
 
