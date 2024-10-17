@@ -1,6 +1,5 @@
 # GitHub Repository Search App
-
-![GithubLogo](images/github.png)
+<img src="images/github.png" alt="SplashScreen" width="220" height="220">
 
 Build a mobile application using the GitHub API to search through repositories. Select a repository and view detailed information about the project and contributors. Upon selecting a contributor, list the repositories tagged to that contributor.
 
@@ -29,7 +28,7 @@ The application consists of two screens:
 
 ## Implementation Details
 
-![ui desine](images/DeatilsScreen.png)
+![ui desine](images/Uidesigne.png)
 
 ### Technologies and Architecture
 - **MVVM Architecture**: Used to separate UI logic from the data-handling logic.
@@ -51,23 +50,25 @@ The application consists of two screens:
 ---
 ## Screenshots
 #### 1.Splash Screen 
-![SplashScreen](images/SplashScreen.png)
-### 2. Login and signup Screen 
-![Login ans SignUp Screen](images/LoginPage.png)
+
+<img src="images/SplashScreen.png" alt="Home Screen" width="300"  height = "400" />
+
+### 2. Login and signup Screen
+<img src="images/LoginPage.png" alt="Loginpage" width="300"  height = "400" />
 
 
 ### 1. Home Screen
 - Search for repositories.
 - Display results in a paginated list.
 - Click on a repository to view detailed information.
-
-![Home Screen](images/HomeScreen.png)
+<img src="images/HomeScreen.png" alt="HomeScreen" width="300"  height = "400" />
 
 ### 2. Repo Details Screen
 - View detailed repository information.
 - Clickable project link.
 - Scrollable list of contributors.
-![Repo Details Screen](images/DeatilsScreen.png)
+
+<img src="images/DeatilsScreen.png" alt="Repo Details Screen" width="300"  height = "400" />
 
 ## Setup Instructions
 
