@@ -51,24 +51,24 @@ The application consists of two screens:
 ## Screenshots
 #### 1.Splash Screen 
 
-<img src="images/SplashScreen.png" alt="Home Screen" width="300"  height = "400" />
+<img src="images/SplashScreen.png" alt="Home Screen" width="220"  height = "420" />
 
 ### 2. Login and signup Screen
-<img src="images/LoginPage.png" alt="Loginpage" width="300"  height = "400" />
+<img src="images/LoginPage.png" alt="Loginpage" width="220"  height = "420" />
 
 
 ### 1. Home Screen
 - Search for repositories.
 - Display results in a paginated list.
 - Click on a repository to view detailed information.
-<img src="images/HomeScreen.png" alt="HomeScreen" width="300"  height = "400" />
+<img src="images/HomeScreen.png" alt="HomeScreen" width="220"  height = "420" />
 
 ### 2. Repo Details Screen
 - View detailed repository information.
 - Clickable project link.
 - Scrollable list of contributors.
 
-<img src="images/DeatilsScreen.png" alt="Repo Details Screen" width="300"  height = "400" />
+<img src="images/DeatilsScreen.png" alt="Repo Details Screen" width="220"  height = "420" />
 
 ## Setup Instructions
 
