@@ -29,6 +29,8 @@ The application consists of two screens:
 
 ## Implementation Details
 
+![ui desine]()
+
 ### Technologies and Architecture
 - **MVVM Architecture**: Used to separate UI logic from the data-handling logic.
 - **Jetpack Libraries**: LiveData, ViewModel, Navigation Component.
@@ -43,12 +45,10 @@ The application consists of two screens:
 
 ## Apk File Link 
 ![Dowload The APK File here ](https://drive.google.com/file/d/1DeIUmzEHPaXoCCNO2tx0sGz8VzXYMFLe/view?usp=drive_link)
-
-
-
-
+---
 ## Video Link 
-
+![video](https://drive.google.com/file/d/1O0LACnYr7or7FIPv1aegSkHAWVNoztmW/view?usp=sharing)
+---
 ## Screenshots
 #### 1.Splash Screen 
 ![SplashScreen]()
