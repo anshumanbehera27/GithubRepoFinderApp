@@ -73,9 +73,9 @@ fun SplashScreen(navController: NavController){
             fontSize = 20.sp,
             color = Color.White,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.BottomCenter)
                 .animateContentSize()
-                .padding(bottom = 100.dp, end = 60.dp)  // Increased padding
+                .padding(bottom = 100.dp)  // Increased padding
         )
     }
 }

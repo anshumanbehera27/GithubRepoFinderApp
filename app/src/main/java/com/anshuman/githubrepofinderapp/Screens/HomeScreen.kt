@@ -107,7 +107,7 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
             )
         },
         modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .padding(horizontal = 6.dp, vertical = 16.dp)
             .height(95.dp), // Adjusta height for better visibility
         shape = RoundedCornerShape(12.dp),
         colors = SearchBarDefaults.colors(

@@ -122,15 +122,8 @@ fun GitHubRepoListItem(
                             .background(Color(0x2A673AB7))
                     )
 
-                    Spacer(modifier = Modifier.width(6.dp))
 
-                    // Language (You can update this if you have a specific field for language)
-                    Text(
-                        text = "Language: Not Available",
-                        style = MaterialTheme.typography.bodySmall
-                    )
 
-                    Spacer(modifier = Modifier.width(10.dp))
 
                     // Last Updated Date
                     Text(
