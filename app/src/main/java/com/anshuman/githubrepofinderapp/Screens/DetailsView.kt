@@ -1,149 +1,142 @@
 package com.anshuman.githubrepofinderapp.Screens
 
-
-
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
+import coil.compose.rememberImagePainter
+import com.anshuman.githubrepofinderapp.API.ApiClient
+import com.anshuman.githubrepofinderapp.API.ApiInterface
 import com.anshuman.githubrepofinderapp.Model.Contributor
 
-import com.anshuman.githubrepofinderapp.Model.RepositoryDetail
-import com.anshuman.githubrepofinderapp.R
+import com.anshuman.githubrepofinderapp.viewmodel.MainViewModel
+import com.anshuman.githubrepofinderapp.viewmodel.MainViewModelFactory
 
-@Composable
-fun RepositoryDetailsView(
-    repo: RepositoryDetail,
-    onProjectLinkClicked: () -> Unit
-) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        item {
-            // Owner Avatar
-            Image(
-                painter = painterResource(id = R.drawable.user), // Replace with actual image resource or URL
-                contentDescription = "Owner Avatar",
-                modifier = Modifier
-                    .size(100.dp)
-            )
+//@Composable
+//fun RepoDetailScreen(owner: String, repo: String) {
+//    // Create an instance of ApiClient, which implements ApiInterface
+//
+//    // Initialize the API client and ViewModel
+//
+//
+//    // Observe repository details and contributors
+//    val repositoryDetail by viewModel.repositoryDetail.observeAsState()
+//    val contributors by viewModel.contributors.observeAsState(emptyList())
+//    val context = LocalContext.current
+//
+//    // Fetch repository details when the screen is opened
+//    LaunchedEffect(Unit) {
+//        viewModel.fetchRepositoryDetails(owner, repo)
+//    }
+//
+//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+//        // Display repository details
+//        if (repositoryDetail != null) {
+//            val repoDetail = repositoryDetail!!
+//
+//            // Repository Image (Owner Avatar)
+//            Image(
+//                painter = rememberImagePainter(repoDetail.owner.avatar_url),
+//                contentDescription = "Owner Avatar",
+//                modifier = Modifier
+//                    .size(64.dp)
+//                    .clip(CircleShape)
+//                    .border(1.dp, Color.Gray, CircleShape)
+//            )
+//
+//            // Repository Name
+//            Text(
+//                text = repoDetail.name,
+//                style = MaterialTheme.typography.bodyLarge,
+//                modifier = Modifier.padding(vertical = 8.dp)
+//            )
+//
+//            // Repository Description
+//            Text(
+//                text = repoDetail.description ?: "No description available.",
+//                style = MaterialTheme.typography.bodyMedium
+//            )
+//
+//            // Project Link
+//            Text(
+//                text = "Project Link: ",
+//                style = MaterialTheme.typography.bodyLarge,
+//                modifier = Modifier.padding(top = 8.dp)
+//            )
+//            Text(
+//                text = repoDetail.html_url,
+//                color = Color.Blue,
+//                style = MaterialTheme.typography.bodyLarge,
+//                modifier = Modifier.clickable {
+//                    // Open the project link in a browser
+//                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repoDetail.html_url))
+//                    context.startActivity(intent)
+//                }
+//            )
+//
+//            // Contributors Section
+//            Spacer(modifier = Modifier.height(16.dp))
+//            Text(text = "Contributors:", style = MaterialTheme.typography.bodyLarge)
+////            LazyColumn {
+////                items(contributors) { contributor ->
+////                    ContributorItem(contributor) // Pass a single Contributor object
+////                }
+////            }
+////        } else {
+////            // Show loading or error state
+////            Text(text = "Loading...", style = MaterialTheme.typography.bodyLarge)
+////        }
+//        }
+//    }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Repository Name
-            Text(
-                text = repo.name,
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            // Project Link
-            ClickableText(
-                text = buildAnnotatedString {
-                    append("Project Link: ")
-                    pushStringAnnotation("link", repo.projectLink)
-                    append(repo.projectLink)
-                    pop()
-                },
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary),
-                onClick = { offset ->
-                    // Handle link click if it is clicked
-                    // Logic to open link
-                    onProjectLinkClicked()
-                },
-                modifier = Modifier
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Repository Description
-            Text(
-                text = repo.description ?: "No description available",
-                style = MaterialTheme.typography.bodySmall
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Contributors Label
-            Text(
-                text = "Contributors",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        items(repo.contributors) { contributor ->
-            ContributorItem(contributor)
-        }
-    }
-}
-
-@Composable
-fun ContributorItem(contributor: Contributor) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Contributor Avatar
-        Image(
-            painter = painterResource(id = R.drawable.user), // Replace with actual image resource or URL
-            contentDescription = "Contributor Avatar",
+    @Composable
+    fun ContributorItem(contributor: Contributor) { // Take a single Contributor
+        Row(
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-        )
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Contributor Avatar
+            Image(
+                painter = rememberImagePainter(contributor.avatar_url), // Load actual image from URL
+                contentDescription = "Contributor Avatar",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.Gray, CircleShape)
+            )
 
-        Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-        // Contributor Name
-        Text(
-            text = contributor.name,
-            style = MaterialTheme.typography.bodySmall
-        )
+            // Contributor Name
+            Column {
+                Text(text = contributor.login, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "${contributor.contributions} contributions",
+                    style = MaterialTheme.typography.bodySmall
+                ) // Correct usage
+            }
+        }
     }
-}
 
-@OptIn(ExperimentalFoundationApi::class)
-@Preview(showBackground = true)
-@Composable
-fun PreviewRepositoryDetailsView() {
-    val sampleRepo = RepositoryDetail(
-        ownerAvatar = "sample_avatar_url", // Placeholder for the owner's avatar
-        name = "Sample Repository",
-        projectLink = "https://github.com/sample-repo",
-        description = "This is a sample repository description to showcase the details view.",
-        contributors = listOf(
-            Contributor(name = "Contributor One", avatar = "contributor_one_avatar_url"),
-            Contributor(name = "Contributor Two", avatar = "contributor_two_avatar_url")
-        )
-    )
-
-    RepositoryDetailsView(repo = sampleRepo) {
-        // Handle project link click (e.g., open in a web browser)
-    }
-}

@@ -1,42 +1,60 @@
 package com.anshuman.githubrepofinderapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
+
+
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 
 import com.anshuman.githubrepofinderapp.API.ApiClient
+import com.anshuman.githubrepofinderapp.Model.Contributor
+import com.anshuman.githubrepofinderapp.Screens.ContributorItem
 
-import com.anshuman.githubrepofinderapp.Model.RepoSearchResultItem
 
-
-import com.anshuman.githubrepofinderapp.ViewModels.MainViewModelFactory
+import com.anshuman.githubrepofinderapp.Screens.RepoSearchScreen
+import com.anshuman.githubrepofinderapp.Screens.TopAppBar
 
 import com.anshuman.githubrepofinderapp.ui.theme.GithubRepoFinderAppTheme
 import com.anshuman.githubrepofinderapp.viewmodel.MainViewModel
+import com.anshuman.githubrepofinderapp.viewmodel.MainViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +62,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GithubRepoFinderAppTheme {
-                val apiClient = ApiClient.getClient()
-                val viewModel = ViewModelProvider(this, MainViewModelFactory(apiClient)).get(
-                    MainViewModel::class.java)
-                RepoSearchScreen(viewModel)
+
+              //  Navigation()
+                val navController = rememberNavController()
+                AppNavGraph(navController = navController)
 
 
             }
@@ -55,59 +73,122 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable
-fun RepoSearchScreen(viewModel: MainViewModel) {
-    var searchQuery by remember { mutableStateOf("") }
-    val repositories by viewModel.repositories.observeAsState(emptyList())
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+fun HomeScreen(navController: NavController) {
+    // Use a surface for background color
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        TextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            label = { Text("Search Repository") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { viewModel.searchRepositories(searchQuery) },
-            modifier = Modifier.align(Alignment.End)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text("Search")
-        }
+            TopAppBar()
 
-        Spacer(modifier = Modifier.height(16.dp))
+            // Initialize the API client and ViewModel
+            val apiClient = ApiClient.getClient()
+            val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(apiClient)) // Pass your factory
 
-        repositories.forEach { repo ->
-            RepoItem(repo = repo)
-            Spacer(modifier = Modifier.height(16.dp))
+            RepoSearchScreen(viewModel, navController)
+
+
+            // Repo Search Screen
+            RepoSearchScreen(viewModel ,navController)
         }
     }
 }
+
 
 @Composable
-fun RepoItem(repo: RepoSearchResultItem) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Text(text = "Name: ${repo.name}", modifier = Modifier.padding(bottom = 4.dp))
-        Text(text = "Description: ${repo.description ?: "No description available"}", modifier = Modifier.padding(bottom = 4.dp))
-        Text(text = "Updated At: ${repo.updated_at}", modifier = Modifier.padding(bottom = 4.dp))
-        Text(text = "Stars: ${repo.stargazers_count}", modifier = Modifier.padding(bottom = 4.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground), // Placeholder image
-            contentDescription = null,
-            modifier = Modifier
-                .size(48.dp)
-                .padding(4.dp)
-        )
+fun AppNavGraph(navController: NavHostController) {
+    NavHost(navController, startDestination = "repoSearch") {
+        composable("repoSearch") {
+            val apiClient = ApiClient.getClient()
+            val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(apiClient))
+            RepoSearchScreen(viewModel, navController)
+        }
+        composable("repoDetail/{owner}/{repo}") { backStackEntry ->
+            val owner = backStackEntry.arguments?.getString("owner") ?: ""
+            val repo = backStackEntry.arguments?.getString("repo") ?: ""
+            RepoDetailScreen(owner = owner, repo = repo)
+        }
     }
 }
+
+
+@Composable
+fun RepoDetailScreen(owner: String, repo: String) {
+    val apiClient = ApiClient.getClient()
+    val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(apiClient))
+
+    val repositoryDetail by viewModel.repositoryDetail.observeAsState()
+    val contributors by viewModel.contributors.observeAsState(emptyList())
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchRepositoryDetails(owner, repo)
+    }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        // Display repository details
+        if (repositoryDetail != null) {
+            val repoDetail = repositoryDetail!!
+
+            // Repository Image (Owner Avatar)
+            Image(
+                painter = rememberImagePainter(repoDetail.owner.avatar_url),
+                contentDescription = "Owner Avatar",
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.Gray, CircleShape)
+            )
+
+            // Repository Name
+            Text(
+                text = repoDetail.name,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            // Repository Description
+            Text(
+                text = repoDetail.description ?: "No description available.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            // Project Link
+            Text(
+                text = "Project Link: ",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            Text(
+                text = repoDetail.html_url,
+                color = Color.Blue,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.clickable {
+                    // Open the project link in a browser
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repoDetail.html_url))
+                    context.startActivity(intent)
+                }
+            )
+
+            // Contributors Section
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Contributors:", style = MaterialTheme.typography.bodyLarge)
+            LazyColumn {
+                items(contributors) { contributor ->
+                    ContributorItem(contributor)
+                }
+            }
+        } else {
+            // Show loading or error state
+            Text(text = "Loading...", style = MaterialTheme.typography.bodyLarge)
+        }
+    }
+}
+
+
+
+
+

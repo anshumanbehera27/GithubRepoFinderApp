@@ -1,14 +1,21 @@
 package com.anshuman.githubrepofinderapp.Model
 
 data class RepositoryDetail(
-    val ownerAvatar: String, // URL or resource for the owner's avatar
     val name: String,
-    val projectLink: String,
     val description: String?,
-    val contributors: List<Contributor>
+    val owner: Owner,
+    val html_url: String, // Project link
+    val stargazers_count: Int, // Stars count
+    val updated_at: String // Last updated date
+)
+
+data class Owner(
+    val login: String,
+    val avatar_url: String // Owner image
 )
 
 data class Contributor(
-    val name: String,
-    val avatar: String // URL or resource for the contributor's avatar
+    val login: String, // Username of the contributor
+    val contributions: Int, // Number of contributions
+    val avatar_url: String // URL for the contributor's avatar image
 )

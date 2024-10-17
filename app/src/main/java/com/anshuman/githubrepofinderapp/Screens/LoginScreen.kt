@@ -4,7 +4,7 @@ package com.anshuman.githubrepofinderapp.Screens
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.anshuman.githubrepofinderapp.HomeScreen
 import com.anshuman.githubrepofinderapp.R
 
 
@@ -74,7 +75,7 @@ fun LoginScreen(navController: NavController) {
             style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
             color = Color.Black,
         )
-      Spacer(modifier = Modifier.height(20.dp))
+      Spacer(modifier = Modifier.height(4.dp))
 
         Text(
             text = "Username:",

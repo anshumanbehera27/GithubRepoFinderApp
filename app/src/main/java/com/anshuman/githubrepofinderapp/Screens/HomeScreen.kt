@@ -2,10 +2,12 @@ package com.anshuman.githubrepofinderapp.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,36 +40,44 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
-
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-
 import com.anshuman.githubrepofinderapp.R
-
+import com.anshuman.githubrepofinderapp.viewmodel.MainViewModel
 
 
 
 @Composable
-fun HomeScreen(navController: NavController) {
-
-//    val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(ApiClient.getClient()))
-//    val repositories by viewModel.repositories.observeAsState(emptyList())
+fun RepoSearchScreen(viewModel: MainViewModel , navController: NavController) {
+    var searchQuery by remember { mutableStateOf("") }
+    val repositories by viewModel.repositories.observeAsState(emptyList())
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopAppBar()
-
+        // Search Bar
         SearchBar(onSearchQueryChanged = { query ->
-           // viewModel.searchRepositories(query) // Call the ViewModel's search function
+            searchQuery = query
+            if (query.isNotEmpty()) {
+                viewModel.searchRepositories(query) // Trigger search in ViewModel
+            }
         })
 
+        Spacer(modifier = Modifier.height(16.dp))
 
-
-
-
+        // Repository List
+        if (repositories.isNotEmpty()) {
+            GitHubRepoList(repos = repositories, onRepoClicked = { repo ->
+                navController.navigate("repoDetail/${repo.owner?.login}/${repo.name}")
+            })
+        } else {
+            // Show empty state or no results
+            Text("No repositories found", style = MaterialTheme.typography.bodyLarge)
+        }
     }
 }
 
@@ -82,32 +92,34 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
     SearchBar(
         query = query,
         onQueryChange = {
-            query = it
-            onSearchQueryChanged(it)
+            query =  it
+            onSearchQueryChanged(it) // Trigger the search function whenever the query changes
         },
         onSearch = {
-            // Optional: Handle what happens on search
             searchActive = false
         },
         active = searchActive,
         onActiveChange = { searchActive = it },
-        placeholder = { Text(text = "Search Your Repositories") },
-        modifier = Modifier
-            .fillMaxWidth()
+        placeholder = {
+            Text(
+                text = "Search Your Repositories",
+                color = Color.Gray // Placeholder text color
+            )
+        },
+        modifier = Modifier.fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
-            .height(65.dp),
+            .height(95.dp), // Adjusta height for better visibility
         shape = RoundedCornerShape(12.dp),
         colors = SearchBarDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+
         ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search Icon",
                 tint = Color.Gray,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable { searchActive = !searchActive }
+                modifier = Modifier.size(24.dp)
             )
         },
         trailingIcon = {
@@ -126,16 +138,20 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
             }
         },
         content = {
-            // Show search results if needed
             if (searchActive) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    // You can show suggestions based on query here
-                    Text("Suggestions go here!")
+                // Suggestions or results area
+                Column(
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    Text(text = "Suggestions or search results can be displayed here.")
                 }
             }
         }
     )
 }
+
+
+
 
 
 
@@ -181,8 +197,3 @@ fun TopAppBar() {
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun homescreenpreview(){
-    HomeScreen(navController = rememberNavController())
-}

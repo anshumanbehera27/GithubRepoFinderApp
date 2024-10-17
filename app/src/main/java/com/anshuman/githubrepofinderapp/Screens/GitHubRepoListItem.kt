@@ -25,21 +25,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import com.anshuman.githubrepofinderapp.Model.RepoSearchResultItem
 
 
 import com.anshuman.githubrepofinderapp.R
 
+
+@Composable
+fun GitHubRepoList(repos: List<RepoSearchResultItem>, onRepoClicked: (RepoSearchResultItem) -> Unit) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(repos) { repo ->
+            GitHubRepoListItem(
+                repo = repo,
+                onRepoClicked = { onRepoClicked(repo) }
+            )
+        }
+    }
+}
+
 @Composable
 fun GitHubRepoListItem(
-    repoName: String,
-    repoDescription: String,
-    lastUpdated: String,
-    starCount: Int,
-    icon: Painter,
-    language: String,
+    repo: RepoSearchResultItem,
     onRepoClicked: () -> Unit
 ) {
     ElevatedCard(
@@ -48,7 +59,7 @@ fun GitHubRepoListItem(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 16.dp)
+            .padding(all = 16.dp).clickable(onClick = onRepoClicked)
     ) {
         Box(
             modifier = Modifier
@@ -67,18 +78,21 @@ fun GitHubRepoListItem(
                         .padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Avatar Image with Coil
                     Image(
-                        painter = icon,
-                        contentDescription = "Repo Icon",
+                        painter = rememberImagePainter(data = repo.owner?.avatar_url),
+                        contentDescription = "Owner Avatar",
                         modifier = Modifier
                             .size(30.dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))  // Space between image and text
 
+                    // Repository Name
                     Text(
-                        text = repoName,
+                        text = repo.name,
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF0366D6)
@@ -88,8 +102,9 @@ fun GitHubRepoListItem(
                     )
                 }
 
+                // Repository Description
                 Text(
-                    text = repoDescription,
+                    text = repo.description ?: "No description available",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 16.dp, start = 10.dp)
                 )
@@ -109,19 +124,20 @@ fun GitHubRepoListItem(
 
                     Spacer(modifier = Modifier.width(6.dp))
 
+                    // Language (You can update this if you have a specific field for language)
                     Text(
-                        text = language,
+                        text = "Language: Not Available",
                         style = MaterialTheme.typography.bodySmall
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = "Last Updated: $lastUpdated",
-                        style = MaterialTheme.typography.labelSmall,
 
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    // Last Updated Date
+                    Text(
+                        text = "Last Updated: ${repo.updated_at}",
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
-
-
             }
 
             // Align star icon and count to the top-right corner
@@ -136,8 +152,9 @@ fun GitHubRepoListItem(
                     modifier = Modifier.size(24.dp)
                 )
 
+                // Star count
                 Text(
-                    text = starCount.toString(),
+                    text = repo.stargazers_count.toString(),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -145,56 +162,10 @@ fun GitHubRepoListItem(
     }
 }
 
-//
-//@Composable
-//fun GitHubRepoList(repos: List<GitHubRepo>) {
-//    LazyColumn(modifier = Modifier.fillMaxSize()) {
-//        items(repos) { repo ->
-//            GitHubRepoListItem(
-//                repoName = repo.name ?: "No Name", // Provide a default if repo.name is null
-//                repoDescription = repo.description ?: "No Description", // Provide a default if repo.description is null
-//                lastUpdated = repo.updatedAt ?: "Not Available", // Provide a default if repo.updatedAt is null
-//                starCount = repo.stars ?: 0, // Use 0 as a default if repo.stars is null
-//                icon = painterResource(id = repo.icon), // Convert Int to Painter using painterResource
-//                language = repo.language ?: "Unknown", // Provide a default if repo.language is null
-//                onRepoClicked = {  } // Handle repo click event
-//            )
-//        }
-//    }
-//}
 
 
 
-//
-//@Composable
-//fun PreviewGitHubRepoListItem() {
-//    val sampleRepos = listOf(
-//        GitHubRepo(
-//            name = "Sample Repository 1",
-//            description = "This is a sample repository description 1.",
-//            updatedAt = "2024-10-16",
-//            stars = 100,
-//            language = "Kotlin",
-//            icon = R.drawable.github // Use the actual drawable resource ID
-//        ),
-//        GitHubRepo(
-//            name = "Sample Repository 2",
-//            description = "This is a sample repository description 2.",
-//            updatedAt = "2024-10-16",
-//            stars = 150,
-//            language = "Java",
-//            icon = R.drawable.github // Use the actual drawable resource ID
-//        ),
-//        GitHubRepo(
-//            name = "Sample Repository 3",
-//            description = "This is a sample repository description 3.",
-//            updatedAt = "2024-10-16",
-//            stars = 200,
-//            language = "Python",
-//            icon = R.drawable.github // Use the actual drawable resource ID
-//        )
-//    )
-//
-//
-//
-//}
+
+
+
+
