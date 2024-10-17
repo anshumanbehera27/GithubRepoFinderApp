@@ -1,6 +1,6 @@
 # GitHub Repository Search App
 
-![GithubLogo]()
+![GithubLogo](images/github.png)
 
 Build a mobile application using the GitHub API to search through repositories. Select a repository and view detailed information about the project and contributors. Upon selecting a contributor, list the repositories tagged to that contributor.
 
@@ -29,7 +29,7 @@ The application consists of two screens:
 
 ## Implementation Details
 
-![ui desine]()
+![ui desine](images/DeatilsScreen.png)
 
 ### Technologies and Architecture
 - **MVVM Architecture**: Used to separate UI logic from the data-handling logic.
@@ -44,16 +44,16 @@ The application consists of two screens:
 3. **Pagination**: Implemented on the home page to fetch 10 items at a time from the GitHub API.
 
 ## Apk File Link 
-![Dowload The APK File here ](https://drive.google.com/file/d/1DeIUmzEHPaXoCCNO2tx0sGz8VzXYMFLe/view?usp=drive_link)
+[Dowload The APK File here ](https://drive.google.com/file/d/1DeIUmzEHPaXoCCNO2tx0sGz8VzXYMFLe/view?usp=drive_link)
 ---
 ## Video Link 
-![video](https://drive.google.com/file/d/1O0LACnYr7or7FIPv1aegSkHAWVNoztmW/view?usp=sharing)
+[video](https://drive.google.com/file/d/1O0LACnYr7or7FIPv1aegSkHAWVNoztmW/view?usp=sharing)
 ---
 ## Screenshots
 #### 1.Splash Screen 
-![SplashScreen]()
+![SplashScreen](images/SplashScreen.png)
 ### 2. Login and signup Screen 
-![Login ans SignUp Screen]()
+![Login ans SignUp Screen](images/LoginPage.png)
 
 
 ### 1. Home Screen
@@ -61,14 +61,13 @@ The application consists of two screens:
 - Display results in a paginated list.
 - Click on a repository to view detailed information.
 
-![Home Screen]()
+![Home Screen](images/HomeScreen.png)
 
 ### 2. Repo Details Screen
 - View detailed repository information.
 - Clickable project link.
 - Scrollable list of contributors.
-
-![Repo Details Screen]()
+![Repo Details Screen](images/DeatilsScreen.png)
 
 ## Setup Instructions
 
