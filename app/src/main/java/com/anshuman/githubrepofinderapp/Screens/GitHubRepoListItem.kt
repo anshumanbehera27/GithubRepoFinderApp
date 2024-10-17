@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.anshuman.githubrepofinderapp.Model.GitHubRepo
+
+
 import com.anshuman.githubrepofinderapp.R
 
 @Composable
@@ -104,7 +104,7 @@ fun GitHubRepoListItem(
                         modifier = Modifier
                             .size(16.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFF673AB7))
+                            .background(Color(0x2A673AB7))
                     )
 
                     Spacer(modifier = Modifier.width(6.dp))
@@ -145,54 +145,56 @@ fun GitHubRepoListItem(
     }
 }
 
-@Composable
-fun GitHubRepoList(repos: List<GitHubRepo>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(repos) { repo ->
-            GitHubRepoListItem(
-                repoName = repo.name,
-                repoDescription = repo.description ?: "No description available",
-                lastUpdated = repo.updatedAt,
-                starCount = repo.stars,
-                icon = painterResource(id = R.drawable.github), // Example icon
-                language = repo.language ?: "No Language",
-                onRepoClicked = { /* Handle repo click */ }
-            )
-        }
-    }
-}
+//
+//@Composable
+//fun GitHubRepoList(repos: List<GitHubRepo>) {
+//    LazyColumn(modifier = Modifier.fillMaxSize()) {
+//        items(repos) { repo ->
+//            GitHubRepoListItem(
+//                repoName = repo.name ?: "No Name", // Provide a default if repo.name is null
+//                repoDescription = repo.description ?: "No Description", // Provide a default if repo.description is null
+//                lastUpdated = repo.updatedAt ?: "Not Available", // Provide a default if repo.updatedAt is null
+//                starCount = repo.stars ?: 0, // Use 0 as a default if repo.stars is null
+//                icon = painterResource(id = repo.icon), // Convert Int to Painter using painterResource
+//                language = repo.language ?: "Unknown", // Provide a default if repo.language is null
+//                onRepoClicked = {  } // Handle repo click event
+//            )
+//        }
+//    }
+//}
 
 
 
-@Composable
-fun PreviewGitHubRepoListItem() {
-    val sampleRepos = listOf(
-        GitHubRepo(
-            name = "Sample Repository 1",
-            description = "This is a sample repository description 1.",
-            updatedAt = "2024-10-16",
-            stars = 100,
-            language = "Kotlin",
-            icon = R.drawable.github // Use the actual drawable resource ID
-        ),
-        GitHubRepo(
-            name = "Sample Repository 2",
-            description = "This is a sample repository description 2.",
-            updatedAt = "2024-10-16",
-            stars = 150,
-            language = "Java",
-            icon = R.drawable.github // Use the actual drawable resource ID
-        ),
-        GitHubRepo(
-            name = "Sample Repository 3",
-            description = "This is a sample repository description 3.",
-            updatedAt = "2024-10-16",
-            stars = 200,
-            language = "Python",
-            icon = R.drawable.github // Use the actual drawable resource ID
-        )
-    )
-    GitHubRepoList(repos = sampleRepos)
-
-
-}
+//
+//@Composable
+//fun PreviewGitHubRepoListItem() {
+//    val sampleRepos = listOf(
+//        GitHubRepo(
+//            name = "Sample Repository 1",
+//            description = "This is a sample repository description 1.",
+//            updatedAt = "2024-10-16",
+//            stars = 100,
+//            language = "Kotlin",
+//            icon = R.drawable.github // Use the actual drawable resource ID
+//        ),
+//        GitHubRepo(
+//            name = "Sample Repository 2",
+//            description = "This is a sample repository description 2.",
+//            updatedAt = "2024-10-16",
+//            stars = 150,
+//            language = "Java",
+//            icon = R.drawable.github // Use the actual drawable resource ID
+//        ),
+//        GitHubRepo(
+//            name = "Sample Repository 3",
+//            description = "This is a sample repository description 3.",
+//            updatedAt = "2024-10-16",
+//            stars = 200,
+//            language = "Python",
+//            icon = R.drawable.github // Use the actual drawable resource ID
+//        )
+//    )
+//
+//
+//
+//}

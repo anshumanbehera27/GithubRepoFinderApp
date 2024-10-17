@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -27,6 +26,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,27 +34,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+
 import com.anshuman.githubrepofinderapp.R
+
+
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
+
+//    val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(ApiClient.getClient()))
+//    val repositories by viewModel.repositories.observeAsState(emptyList())
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TopAppBar()
-        SearchBar(onSearchQueryChanged = { })
-        PreviewGitHubRepoListItem()
+
+        SearchBar(onSearchQueryChanged = { query ->
+           // viewModel.searchRepositories(query) // Call the ViewModel's search function
+        })
 
 
 
@@ -68,10 +76,8 @@ fun HomeScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
-    // Manage the active state of the SearchBar
     var searchActive by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
-    var items by remember { mutableStateOf(listOf<String>()) }
 
     SearchBar(
         query = query,
@@ -80,10 +86,11 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
             onSearchQueryChanged(it)
         },
         onSearch = {
-            searchActive = false // Optionally close the search bar on search action
+            // Optional: Handle what happens on search
+            searchActive = false
         },
         active = searchActive,
-        onActiveChange = { searchActive = it }, // Toggle search bar active state
+        onActiveChange = { searchActive = it },
         placeholder = { Text(text = "Search Your Repositories") },
         modifier = Modifier
             .fillMaxWidth()
@@ -94,16 +101,13 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         leadingIcon = {
-            // Add a clickable search icon
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search Icon",
                 tint = Color.Gray,
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable {
-                        searchActive = !searchActive
-                    }
+                    .clickable { searchActive = !searchActive }
             )
         },
         trailingIcon = {
@@ -115,38 +119,23 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {
-                            // Clear query or deactivate search bar
-                            if (query.isNotBlank()) {
-                                query = ""
-                                onSearchQueryChanged("") // Clear the query
-                            } else {
-                                searchActive = !searchActive
-                            }
+                            query = ""
+                            onSearchQueryChanged("") // Clear query
                         }
                 )
             }
         },
         content = {
-            // Content shown when the search bar is active
+            // Show search results if needed
             if (searchActive) {
                 Box(modifier = Modifier.fillMaxWidth()) {
-                    Text("Search results or suggestions go here!")
-                }
-            }
-
-            items.forEach { item ->
-                Row(Modifier.padding(all = 16.dp)) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_history_24),
-                        contentDescription = null
-                    )
-                    Text(text = item)
+                    // You can show suggestions based on query here
+                    Text("Suggestions go here!")
                 }
             }
         }
     )
 }
-
 
 
 
