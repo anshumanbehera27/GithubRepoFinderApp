@@ -37,7 +37,7 @@ import com.anshuman.githubrepofinderapp.viewmodel.MainViewModelFactory
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp , top = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Contributor Avatar

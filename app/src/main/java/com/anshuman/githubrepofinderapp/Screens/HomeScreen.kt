@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -56,14 +57,14 @@ fun RepoSearchScreen(viewModel: MainViewModel , navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp),
+            .padding(top = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Search Bar
         SearchBar(onSearchQueryChanged = { query ->
             searchQuery = query
             if (query.isNotEmpty()) {
-                viewModel.searchRepositories(query) // Trigger search in ViewModel
+                viewModel.searchRepositories(query ) // Trigger search in ViewModel
             }
         })
 
@@ -107,8 +108,8 @@ fun SearchBar(onSearchQueryChanged: (String) -> Unit) {
             )
         },
         modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 16.dp)
-            .height(95.dp), // Adjusta height for better visibility
+            .padding(horizontal = 6.dp , vertical = 16.dp)
+            .height(75.dp), // Adjusta height for better visibility
         shape = RoundedCornerShape(12.dp),
         colors = SearchBarDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
