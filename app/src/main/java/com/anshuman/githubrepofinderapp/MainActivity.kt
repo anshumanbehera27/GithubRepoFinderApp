@@ -1,5 +1,6 @@
 package com.anshuman.githubrepofinderapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +28,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 
@@ -81,27 +83,25 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavController) {
     // Use a surface for background color
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    Scaffold(
+        topBar = { TopAppBar()}
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            TopAppBar()
 
-            // Initialize the API client and ViewModel
-            val navController = rememberNavController()
-            AppNavGraph(navController = navController)
+        val navController = rememberNavController()
+        AppNavGraph(navController = navController)
 
-
-
-        }
     }
-}
+
+
+
+
+
+    }
+
 
 
 @Composable
@@ -135,8 +135,8 @@ fun RepoDetailScreen(owner: String, repo: String) {
     }
 
     Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(0.dp)) {
+        .fillMaxHeight()
+        .padding(top = 85.dp)) {
         // Display repository details
 
         if (repositoryDetail != null) {
@@ -231,7 +231,7 @@ fun RepoDetailScreen(owner: String, repo: String) {
                     // Clickable Project Link
                     Text(
                         text = repoDetail.html_url,
-                        color = Color.Blue, // Highlight the link in blue
+                        color = Color.Black, // Highlight the link in blue
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
                             .clickable {
